@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: authentication-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_service_db?createDatabaseIfNotExist=true
+    username: root
+    password: hung123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5       # Minimum number of idle connections in the pool
+      maximum-pool-size: 20  # Maximum number of connections in the pool
+      idle-timeout: 30000    # (30s) Time before an idle connection is removed
+      max-lifetime: 1800000  # (30m) Maximum lifetime of a connection
+      connection-timeout: 30000 # (30s) Timeout for getting a new connection
+      pool-name: MyHikariPool # Custom pool name (useful for logging)
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: redispassword
+
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8081
+
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 360000 # 1 hour
+      refresh-token:
+        expiration: 86400000 # a day
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
