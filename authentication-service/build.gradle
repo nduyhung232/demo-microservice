@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.2'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.liquibase.gradle' version '2.1.1'
 }
 
 group = 'com.example'
@@ -27,17 +26,18 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.liquibase:liquibase-core:4.23.1'
+	implementation 'org.liquibase:liquibase-core'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.4.1'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
+	implementation 'mysql:mysql-connector-java'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-resource-server
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server', version: '3.3.5'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.3.8'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
-	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.12.5'
+	implementation 'io.jsonwebtoken:jjwt'
+
 	// mapstruct
 	implementation 'org.mapstruct:mapstruct:1.6.2'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
@@ -46,9 +46,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	// mapstruct support working with lombok
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -56,15 +56,4 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-liquibase {
-	activities {
-		main {
-			changeLogFile 'src/main/resources/db/changelog/db.changelog-master.xml'
-			url 'jdbc:mysql://localhost:3306/user_service_db'
-			username 'root'
-			password 'hung123'
-		}
-	}
 }
