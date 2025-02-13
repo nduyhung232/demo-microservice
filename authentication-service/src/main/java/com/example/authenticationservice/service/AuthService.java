@@ -6,6 +6,6 @@ import com.example.authenticationservice.model.dto.UserLoginDTO;
 
 public interface AuthService {
 
-    AuthResponse register(UserCreateDTO userCreateDTO);
+    void register(UserCreateDTO userCreateDTO);
     AuthResponse login(UserLoginDTO userLoginDTO);
 }

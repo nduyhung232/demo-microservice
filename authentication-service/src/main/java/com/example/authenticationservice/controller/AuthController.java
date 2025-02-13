@@ -1,5 +1,6 @@
 package com.example.authenticationservice.controller;
 
+import com.example.authenticationservice.model.dto.ApiResponse;
 import com.example.authenticationservice.model.dto.AuthResponse;
 import com.example.authenticationservice.model.dto.UserCreateDTO;
 import com.example.authenticationservice.model.dto.UserLoginDTO;
@@ -20,8 +21,10 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody @Valid UserCreateDTO userCreateDTO) {
-        return ResponseEntity.ok(authService.register(userCreateDTO));
+    public ResponseEntity<ApiResponse> register(@RequestBody @Valid UserCreateDTO userCreateDTO) {
+        ApiResponse apiResponse = new ApiResponse("User created successfully");
+        authService.register(userCreateDTO);
+        return ResponseEntity.ok(apiResponse);
     }
 
     @PostMapping("/login")

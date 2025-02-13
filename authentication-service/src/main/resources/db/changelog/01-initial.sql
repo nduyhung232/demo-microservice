@@ -4,7 +4,7 @@
 CREATE TABLE users (
                        id CHAR(36) PRIMARY KEY,
                        username VARCHAR(255) UNIQUE NOT NULL,
-                       password_hash TEXT NOT NULL,
+                       password TEXT NOT NULL,
                        is_active BOOLEAN DEFAULT TRUE,
                        created_at TIMESTAMP DEFAULT now(),
                        updated_at TIMESTAMP DEFAULT now()
