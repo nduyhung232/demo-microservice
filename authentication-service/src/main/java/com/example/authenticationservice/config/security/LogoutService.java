@@ -1,7 +1,6 @@
 package com.example.authenticationservice.config.security;
 
 import com.example.authenticationservice.config.redis.RedisService;
-import com.example.authenticationservice.model.dto.Token;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class LogoutService implements LogoutHandler {
 
     private final RedisService redisService;
+    private final JwtService jwtService;
 
     @Override
     public void logout(
@@ -25,18 +25,17 @@ public class LogoutService implements LogoutHandler {
             Authentication authentication
     ) {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
-        jwt = authHeader.substring(7);
-        var storedToken = (Token) redisService.getFromRedis(jwt);
+        final String jwt = authHeader.substring(7);
+        var username = redisService.getUsernameFromJwtValue(jwt);
 
-        if (storedToken != null) {
-            redisService.deleteFromRedis(jwt);
+        if (username != null) {
+            redisService.removeJwt(jwt);
             SecurityContextHolder.clearContext();
         } else {
-            log.warn("Token not exist");
+            log.warn("Token not exist: {}", jwt);
         }
     }
 }

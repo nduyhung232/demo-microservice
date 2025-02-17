@@ -1,6 +1,6 @@
 package com.example.authenticationservice.config.exception;
 
-import com.example.authenticationservice.model.dto.ApiResponse;
+import com.example.authenticationservice.model.dto.MessageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,14 +23,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CustomValidationException.class)
-    public ResponseEntity<ApiResponse> handleCustomValidationException(CustomValidationException ex) {
-        ApiResponse apiResponse = new ApiResponse(ex.getMessage());
-        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<MessageResponse> handleCustomValidationException(CustomValidationException ex) {
+        MessageResponse messageResponse = new MessageResponse(ex.getMessage());
+        return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CustomNotFoundException.class)
-    public ResponseEntity<ApiResponse> handleCustomNotFoundException(CustomValidationException ex) {
-        ApiResponse apiResponse = new ApiResponse(ex.getMessage());
-        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+    public ResponseEntity<MessageResponse> handleCustomNotFoundException(CustomValidationException ex) {
+        MessageResponse messageResponse = new MessageResponse(ex.getMessage());
+        return new ResponseEntity<>(messageResponse, HttpStatus.NOT_FOUND);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.authenticationservice.model.dto;
 
-public record ApiResponse(
+public record MessageResponse(
         String message
 ) {
 }

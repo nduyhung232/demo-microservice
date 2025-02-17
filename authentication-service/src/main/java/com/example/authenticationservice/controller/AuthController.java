@@ -1,10 +1,12 @@
 package com.example.authenticationservice.controller;
 
-import com.example.authenticationservice.model.dto.ApiResponse;
 import com.example.authenticationservice.model.dto.AuthResponse;
+import com.example.authenticationservice.model.dto.MessageResponse;
 import com.example.authenticationservice.model.dto.UserCreateDTO;
 import com.example.authenticationservice.model.dto.UserLoginDTO;
 import com.example.authenticationservice.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,31 +17,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> register(@RequestBody @Valid UserCreateDTO userCreateDTO) {
-        ApiResponse apiResponse = new ApiResponse("User created successfully");
+    public ResponseEntity<MessageResponse> register(@RequestBody @Valid UserCreateDTO userCreateDTO) {
+        MessageResponse messageResponse = new MessageResponse("User created successfully");
         authService.register(userCreateDTO);
-        return ResponseEntity.ok(apiResponse);
+        return ResponseEntity.ok(messageResponse);
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
         return ResponseEntity.ok(authService.login(userLoginDTO));
     }
-//
-//    @PostMapping("/refresh")
-//    public ResponseEntity<> refresh() {
-//
-//    }
-//
-//    @PostMapping("/logout")
-//    public ResponseEntity<ApiResponse> logout() {
-//        ApiResponse apiResponse = new ApiResponse("Logged out successfully", null);
-//        return ResponseEntity.ok(apiResponse);
-//    }
+
+    @PostMapping("/refresh-token")
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        authService.refreshToken(request, response);
+    }
 }
