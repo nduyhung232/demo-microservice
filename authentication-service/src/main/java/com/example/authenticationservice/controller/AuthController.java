@@ -5,13 +5,12 @@ import com.example.authenticationservice.model.dto.MessageResponse;
 import com.example.authenticationservice.model.dto.UserCreateDTO;
 import com.example.authenticationservice.model.dto.UserLoginDTO;
 import com.example.authenticationservice.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,10 +34,9 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
+    public ResponseEntity<AuthResponse> refreshToken(@RequestHeader("Authorization") String authorization,
+                                                     @RequestHeader("Refresh-Token") String refreshToken
     ) {
-        authService.refreshToken(request, response);
+        return ResponseEntity.ok(authService.refreshToken(authorization, refreshToken));
     }
 }

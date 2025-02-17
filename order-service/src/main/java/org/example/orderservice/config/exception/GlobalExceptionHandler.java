@@ -1,6 +1,6 @@
-package com.example.authenticationservice.config.exception;
+package org.example.orderservice.config.exception;
 
-import com.example.authenticationservice.model.dto.MessageResponse;
+import org.example.orderservice.model.dto.MessageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

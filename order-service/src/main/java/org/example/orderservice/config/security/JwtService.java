@@ -1,9 +1,7 @@
-package com.example.authenticationservice.config.security;
+package org.example.orderservice.config.security;
 
-import com.example.authenticationservice.model.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.log4j.Log4j2;
@@ -13,45 +11,18 @@ import org.springframework.stereotype.Service;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
 @Log4j2
 public class JwtService {
 
-    @Value("${application.security.jwt.private-key}")
-    private String privateKey;
-
     @Value("${application.security.jwt.public-key}")
     private String publicKey;
-
-    @Value("${application.security.jwt.expiration}")
-    private long jwtExpiration;
-
-    @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshExpiration;
-
-    private PrivateKey getPrivateKey() {
-        try {
-            byte[] keyBytes = Base64.getDecoder().decode(privateKey);
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            return keyFactory.generatePrivate(keySpec);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("No such algorithm");
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException("Private key invalid");
-        }
-    }
 
     public PublicKey getPublicKey() {
         try {
@@ -64,38 +35,6 @@ public class JwtService {
         } catch (InvalidKeySpecException e) {
             throw new RuntimeException("Public key invalid");
         }
-    }
-
-    public String generateAccessToken(User user) {
-        return generateAccessToken(new HashMap<>(), user);
-    }
-
-    public String generateAccessToken(
-            Map<String, Object> extraClaims,
-            User user
-    ) {
-        return buildToken(extraClaims, user, jwtExpiration);
-    }
-
-    public String generateRefreshToken(
-            User user
-    ) {
-        return buildToken(new HashMap<>(), user, refreshExpiration);
-    }
-
-    private String buildToken(
-            Map<String, Object> extraClaims,
-            User user,
-            long expiration
-    ) {
-        return Jwts
-                .builder()
-                .claims(extraClaims)
-                .subject(user.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getPrivateKey())
-                .compact();
     }
 
     public String extractUsername(String token) {
@@ -131,13 +70,5 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
-
-//    private boolean isTokenExpired(String token) {
-//        return extractExpiration(token).before(new Date());
-//    }
-//
-//    private Date extractExpiration(String token) {
-//        return extractClaim(token, Claims::getExpiration);
-//    }
 
 }
