@@ -4,7 +4,7 @@ spring:
 
   datasource:
     master:
-      url: jdbc:mysql://localhost:3306/product_service_master_db?createDatabaseIfNotExist=true
+      jdbc-url: jdbc:mysql://localhost:3306/product_service_master_db?createDatabaseIfNotExist=true
       username: root
       password: hung123
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,7 +16,7 @@ spring:
         connection-timeout: 30000 # (30s) Timeout for getting a new connection
         pool-name: MyHikariPool # Custom pool name (useful for logging)
     slave:
-      url: jdbc:mysql://localhost:3306/product_service_slave_db?createDatabaseIfNotExist=true
+      jdbc-url: jdbc:mysql://localhost:3306/product_service_slave_db?createDatabaseIfNotExist=true
       username: root
       password: hung123
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -28,6 +28,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
 
   liquibase:
@@ -43,7 +44,7 @@ spring:
 server:
   servlet:
     context-path: /product-service
-  port: 8082
+  port: 8083
 
 application:
   security:
