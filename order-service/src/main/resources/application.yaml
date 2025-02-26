@@ -35,6 +35,12 @@ spring:
       port: 6379
       password: redispassword
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 server:
   servlet:
     context-path: /order-service

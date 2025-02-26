@@ -50,6 +50,9 @@ dependencies {
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    // https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
