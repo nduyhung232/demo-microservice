@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.example.orderservice.config.exception.CustomAuthenticationException;
 import org.example.orderservice.config.redis.RedisService;
+import org.example.orderservice.model.entity.User;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -40,12 +42,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             jwtService.verifyToken(jwt);
-            var isTokenInWhiteList = redisService.getUsernameFromJwtValue(jwt) != null;
+            User userDetails = redisService.getUserFromJwtValue(jwt);
 
-            if (!isTokenInWhiteList) {
-                log.warn("Token has expired");
-                throw new CustomAuthenticationException("Token has expired");
+            if (userDetails == null) {
+                log.warn("User has logout");
+                throw new CustomAuthenticationException("User has logout");
             }
+
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
         filterChain.doFilter(request, response);
     }

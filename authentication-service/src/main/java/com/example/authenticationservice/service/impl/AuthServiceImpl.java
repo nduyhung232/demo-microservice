@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
         var refreshToken = jwtService.generateRefreshToken(user);
 
         // save jwt and username to whitelist
-        redisService.saveToRedisForJWT(accessToken, user.getUsername());
+        redisService.saveToRedisForJWT(accessToken, user);
         return new AuthResponse(accessToken, refreshToken);
     }
 
@@ -79,7 +79,7 @@ public class AuthServiceImpl implements AuthService {
             var accessTokenNew = jwtService.generateAccessToken(user);
             var refreshTokenNew = jwtService.generateRefreshToken(user);
             redisService.removeJwt(accessToken);
-            redisService.saveToRedisForJWT(accessTokenNew, username);
+            redisService.saveToRedisForJWT(accessTokenNew, user);
             return new AuthResponse(accessTokenNew, refreshTokenNew);
         } else {
             throw new CustomValidationException("Invalid token");

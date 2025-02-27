@@ -1,5 +1,6 @@
 package com.example.authenticationservice.config.redis;
 
+import com.example.authenticationservice.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,8 +32,8 @@ public class RedisService {
     /**
      * Save jwt: username
      */
-    public void saveToRedisForJWT(String jwt, String username) {
-        saveToRedis(jwt, username, tokenExpiration);
+    public void saveToRedisForJWT(String jwt, User user) {
+        saveToRedis(jwt, user, tokenExpiration);
     }
 
     /**

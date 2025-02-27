@@ -1,6 +1,7 @@
 package org.example.orderservice.config.redis;
 
 import lombok.RequiredArgsConstructor;
+import org.example.orderservice.model.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -45,8 +46,8 @@ public class RedisService {
     /**
      * Remove username value from JWT value
      */
-    public String getUsernameFromJwtValue(String jwt) {
-        return (String) getFromRedis(jwt);
+    public User getUserFromJwtValue(String jwt) {
+        return (User) getFromRedis(jwt);
     }
 
 }
